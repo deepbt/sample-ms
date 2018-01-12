@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sample-ms-demo
+  labels:
+    run: sample-ms-demo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: sample-ms-demo  
+    spec:
+      containers:
+      - name: sample-ms-demo
+        image: sample-ms/sample-ms-demo
+        ports:
+        - env:
+          - name: TEST_ENV
+            valueFrom:
+             configMapKeyRef:
+                name: configmaps-demo
+                key: test.key
+          volumeMounts:
+          - name: application-config 
+            mountPath: "/deployments/config" 
+            readOnly: true
+        ports:
+        - containerPort: 3333
+          protocol: TCP
+          port: 3333              
+      volumes:
+      - name: application-config
+        configMap:
+          name: mountcm 
+          items:
+          - key: application.properties 
+            path: application.properties 

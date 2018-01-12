@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres-demo
+  labels:
+    run: postgres-demo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: postgres-demo  
+    spec:
+      containers:
+      - name: postgres-demo
+        image: sample-ms/postgres-demo     
+        ports:    
+        - env:
+          - name: TEST_ENV
+            valueFrom:
+             configMapKeyRef:
+                name: configmaps-demo
+                key: test.key
+          volumeMounts:
+          - name: application-config 
+            mountPath: "/deployments/config/postgres" 
+            readOnly: true
+        ports:
+        - containerPort: 2222
+          protocol: TCP
+          port: 2222           
+      volumes:
+      - name: application-config
+        configMap:
+          name: postgrescm 
+          items:
+          - key: application.properties 
+            path: application.properties 
