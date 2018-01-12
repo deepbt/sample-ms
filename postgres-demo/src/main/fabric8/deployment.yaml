@@ -16,14 +16,24 @@ spec:
         image: sample-ms/postgres-demo     
         ports:    
         - env:
-          - name: TEST_ENV
+          - name: EXT_POSTGRESQL_DB_HOST
             valueFrom:
              configMapKeyRef:
-                name: configmaps-demo
-                key: test.key
+                name: postgrescm
+                key: EXT_POSTGRESQL_DB_HOST
+          - name: EXT_POSTGRESQL_DB_PORT
+            valueFrom:
+             configMapKeyRef:
+                name: postgrescm
+                key: EXT_POSTGRESQL_DB_PORT
+          - name: .EXT_POSTGRESQL_DB_NAME
+            valueFrom:
+             configMapKeyRef:
+                name: postgrescm
+                key: .EXT_POSTGRESQL_DB_NAME                
           volumeMounts:
           - name: application-config 
-            mountPath: "/deployments/config/postgres" 
+            mountPath: "/deployments/config" 
             readOnly: true
         ports:
         - containerPort: 2222
