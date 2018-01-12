@@ -74,12 +74,6 @@
             <artifactId>tomcat-embed-websocket</artifactId>
         </dependency>-->
 
-		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>provided</version>
-		</dependency>
 		
 	</dependencies>
     <profiles>
