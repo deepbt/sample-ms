@@ -4,7 +4,7 @@
 	<groupId>com.examples</groupId>
 	<artifactId>postgres-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>Postgres Spring Boot MS Demo</name>
 	<description>Spring Boot Postrgres Integration Demo - Jar</description>
@@ -68,32 +68,52 @@
 			<version>9.4.1208</version>
 		</dependency> -->
 	</dependencies>
- 	<build>
-		<plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>${maven.compiler.plugin.version}</version>
-                        <configuration>
-                            <source>${java.version}</source>
-                            <target>${java.version}</target>
-                        </configuration>
-                    </plugin>			
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <!-- <version>2.3</version> -->
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <outputDirectory>target</outputDirectory>
-              		  <warName>ROOT</warName>
-                </configuration>
-            </plugin>
-		</plugins>			
-	</build>
+     <profiles>
+        <profile>
+            <id>openshift</id>
+           <build>
+           <finalName>${project.artifactId}</finalName>
+		   
+
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+			                
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>fabric8-maven-plugin</artifactId>
+						<version>${fabric8.maven.plugin.version}</version>
+						<executions>
+							<execution>
+								<id>fmp</id>
+								<goals>
+									<goal>resource</goal>
+									<goal>helm</goal>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Build an executable JAR 
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>2.4</version>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>com.examples.cm.ConfigMapsDemo1Application</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</plugin>
+					-->					
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
