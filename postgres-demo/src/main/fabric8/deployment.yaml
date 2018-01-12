@@ -26,11 +26,11 @@ spec:
              configMapKeyRef:
                 name: postgrescm
                 key: EXT_POSTGRESQL_DB_PORT
-          - name: .EXT_POSTGRESQL_DB_NAME
+          - name: EXT_POSTGRESQL_DB_NAME
             valueFrom:
              configMapKeyRef:
                 name: postgrescm
-                key: .EXT_POSTGRESQL_DB_NAME                
+                key: EXT_POSTGRESQL_DB_NAME                
           volumeMounts:
           - name: application-config 
             mountPath: "/deployments/config" 
