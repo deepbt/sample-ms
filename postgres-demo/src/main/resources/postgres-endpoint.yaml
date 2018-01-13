@@ -1,14 +1,28 @@
+---
+kind: List
 apiVersion: v1
-kind: Endpoints
 metadata:
-  name: external-postgres-service
-subsets: 
-	-
-      addresses:
-        -
-          ip: 10.0.0.0 
+  name: postgres-demo-svc-end
+items:  
+- kind: Endpoints
+  apiVersion: v1
+  metadata:
+   name: ext-postgres-service-endpoint
+  subsets: 
+    - addresses:
+        - ip: 10.12.106.15 
       ports:
-        -
-          port: 5432 
+        - port: 5432 
           name: postgres
-
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ext-postgres-service
+  spec:
+    ports:
+      - name: postgres
+        protocol: TCP
+        port: 5432
+        targetPort: 5432
+        nodePort: 0
+  selector: {}
