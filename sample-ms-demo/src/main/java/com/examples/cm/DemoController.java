@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class DemoController {
@@ -17,6 +18,9 @@ public class DemoController {
 	
 	@Value("${demo.key}")
 	private String demoKey;
+	
+	@Value("${address}")
+	private String address;
 	
     @Autowired
     public DemoController(MessageProps properties) {
@@ -34,6 +38,15 @@ public class DemoController {
         Objects.requireNonNull(properties.getMessage(), "Message was not set in the properties");
         String message = "demoKey = "+demoKey+" and demoMessage = "+demoMessage;
         return new Message("DemoController" + message);
+    }
+    
+    @RequestMapping("/testlocal")
+    public String testlocal() {
+    	 RestTemplate restTemplate = new RestTemplate();
+         
+         String consumeJSONString = restTemplate.getForObject(address, String.class);
+         System.out.println("JSON String: "+consumeJSONString);
+         return consumeJSONString;
     }
    
 }
